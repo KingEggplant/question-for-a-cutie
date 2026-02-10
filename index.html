@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;            
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background: linear-gradient(45deg, #3784db, #ff8fa3, #690d94);
+            color: #0f4980;
+        }
+        
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(194, 214, 10, 0.7);
+            animation: float 6s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+            width: 90%;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(128, 15, 47, 0.3);
+            margin: 20px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #e45b9f;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gif-container {
+            margin: 25px 0;
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 8px solid #c588c5;
+            background-color: #fff0f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-gif, .bear-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .bear-gif {
+            display: none;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .valentine-btn {
+            padding: 18px 40px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            min-width: 180px;
+        }
+        
+        .yes-btn {
+            background: linear-gradient(to right, #ff4d6d, #ff8fa3);
+            color: white;
+        }
+        
+        .yes-btn:hover {
+            background: linear-gradient(to right, #ca1378, #d67eb9);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+        }
+        
+        .no-btn {
+            background: linear-gradient(to right, #ff4d6d, #ff8fa3);
+            color: white;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .no-btn:hover {
+            background: linear-gradient(to right, #3a3e59, #8a7c88);
+        }
+        
+        .no-btn.shrinking {
+            animation: shrinkAnimation 0.3s ease forwards;
+        }
+        
+        @keyframes shrinkAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.7); }
+            100% { transform: scale(var(--shrink-scale, 0.9)); }
+        }
+        
+        .message {
+            font-size: 2.5rem;
+            margin-top: 30px;
+            color: #ff4d6d;
+            font-weight: bold;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .hearts-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .heart-icon {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            animation: bounce 1.5s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .gif-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .valentine-btn {
+                padding: 15px 30px;
+                font-size: 1.5rem;
+                min-width: 150px;
+            }
+            
+            .buttons-container {
+                gap: 20px;
+            }
+            
+            .message {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .gif-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .valentine-btn {
+                padding: 12px 25px;
+                font-size: 1.3rem;
+                min-width: 130px;
+            }
+            
+            .message {
+                font-size: 1.6rem;
+            }
+            
+            .heart-icon {
+                font-size: 2rem;
+            }
+        }
+
+        .side-panel {
+    position: fixed;
+    top: 0;
+    width: 180px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 1;
+    padding: 20px 10px;
+}
+
+/* Left side panel */
+.side-panel.left {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 77, 109, 0.1), transparent);
+}
+
+/* Right side panel */
+.side-panel.right {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 77, 109, 0.1), transparent);
+}
+
+.side-panel img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #ffccd5;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.side-panel img:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .side-panel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 10px;
+        margin-top: 20px;
+        background: linear-gradient(to right, rgba(255, 77, 109, 0.1), rgba(255, 143, 163, 0.1));
+    }
+    
+    .side-panel img {
+        width: 80px;
+        height: 80px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Left side panel -->
+<div class="side-panel left">
+    <img src="https://media1.tenor.com/m/VcR7PqtHqkkAAAAd/besos.gif" alt="Heart">
+</div>
+
+<!-- OR right side panel -->
+<div class="side-panel right">
+    <img src="https://media1.tenor.com/m/YrTD3aW2BiEAAAAd/gaugauchutchut19.gif" alt="Heart">
+    
+</div>
+    <div class="background-animation" id="background"></div>
+    
+    <div class="container">
+        <h1>This Cutie Wants To Know If You Will You Be Mine For Valentines? ( ˘ ³˘)♥</h1>
+
+        <audio id="backgroundMusic" autoplay loop >
+            <source src="images/soft spot.mpeg" type="audio/mpeg">
+            <script>
+                const audio = document.getElementById('backgroundMusic');
+                audio.volume = 0.4; // 40% volume
+            </script>
+        </audio>
+        
+        <div class="gif-container">
+            <img src="images/heartkiss.jpeg" alt="Heart animation" class="main-gif" id="mainGif">
+            <img src="images/kissingme.jpeg" alt="Dancing bear" class="bear-gif" id="bearGif">
+        </div>
+        
+        <div class="buttons-container">
+            <button class="valentine-btn yes-btn" id="yesBtn">YES <i class="fas fa-heart"></i></button>
+            <button class="valentine-btn no-btn" id="noBtn">No</button>
+        </div>
+        
+        <div class="message" id="message">You Make My Heart Flutter</i></div>
+        
+        <div class="hearts-container" id="heartsContainer">
+            <i class="fas fa-heart heart-icon"></i>
+            <i class="fas fa-heart heart-icon"></i>
+            <i class="fas fa-heart heart-icon"></i>
+            <i class="fas fa-heart heart-icon"></i>
+            <i class="fas fa-heart heart-icon"></i>
+        </div>
+    </div>
+    
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    
+    
+    
+    // Try to play immediately (may be blocked by browser)
+    const playPromise = backgroundMusic.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log("Auto-play blocked, will play on interaction");
+            
+            // If blocked, play on first user interaction
+            function playOnInteraction() {
+                backgroundMusic.play();
+                document.removeEventListener('click', playOnInteraction);
+                document.removeEventListener('touchstart', playOnInteraction);
+            }
+            
+            document.addEventListener('click', playOnInteraction, { once: true });
+            document.addEventListener('touchstart', playOnInteraction, { once: true });
+        });
+    }
+});
+
+        // Create animated floating hearts in background
+        const background = document.getElementById('background');
+        const colors = ['#ff4d6d', '#ff8fa3', '#ffb3c1', '#ffccd5'];
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤';
+            
+            // Random properties
+            const size = Math.random() * 30 + 10;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const duration = Math.random() * 10 + 10;
+            const delay = Math.random() * 5;
+            
+            heart.style.left = `${left}vw`;
+            heart.style.fontSize = `${size}px`;
+            heart.style.color = color;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.animationDelay = `${delay}s`;
+            
+            background.appendChild(heart);
+            
+            // Remove heart after animation completes
+            setTimeout(() => {
+                heart.remove();
+            }, (duration + delay) * 1000);
+        }
+        
+        // Create initial hearts
+        for (let i = 0; i < 20; i++) {
+            createHeart();
+        }
+        
+        // Keep creating hearts
+        setInterval(createHeart, 500);
+        
+        // Button functionality
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainGif = document.getElementById('mainGif');
+        const bearGif = document.getElementById('bearGif');
+        const message = document.getElementById('message');
+        const heartsContainer = document.getElementById('heartsContainer');
+        
+        let noClicks = 0;
+        const noBtnTexts = [
+            "No", 
+            "Are you sure?", 
+            "Really sure?", 
+            "Think again!", 
+            "Last chance!", 
+            "Surely not?", 
+            "You might regret this!", 
+            "Give it another thought!", 
+            "Are you absolutely certain?", 
+            "This could be a mistake!", 
+            "Have a heart!", 
+            "Don't be so cold!", 
+            "Change of heart?", 
+            "Wouldn't you reconsider?", 
+            "Is that your final answer?", 
+            "You're breaking my heart!"
+        ];
+        
+        // Track the current scale of the No button
+        let currentScale = 1;
+        
+        noBtn.addEventListener('click', function() {
+            noClicks++;
+            
+            // Apply shrinking animation
+            this.classList.add('shrinking');
+            
+            // Calculate new scale (shrink by 25% each click, minimum 0.1)
+            currentScale = Math.max(currentScale * 0.75, 0.1);
+            
+            // Set CSS variable for the animation end scale
+            this.style.setProperty('--shrink-scale', currentScale);
+            
+            // Update the actual transform after animation
+            setTimeout(() => {
+                this.style.transform = `scale(${currentScale})`;
+                this.classList.remove('shrinking');
+            }, 300);
+            
+            // Change button text
+            if (noClicks <= noBtnTexts.length) {
+                this.textContent = noBtnTexts[Math.min(noClicks - 1, noBtnTexts.length - 1)];
+            }
+            
+            // Make font smaller as button shrinks
+            const fontSize = Math.max(1.8 * currentScale, 0.5);
+            this.style.fontSize = `${fontSize}rem`;
+            
+            // Reduce padding as button shrinks
+            const padding = Math.max(18 * currentScale, 5);
+            this.style.padding = `${padding}px ${padding * 2}px`;
+            
+            // Fade out as it gets very small
+            if (currentScale < 0.3) {
+                this.style.opacity = currentScale * 2;
+            }
+            
+            // Move button to random position after a few clicks (but only if it's still visible)
+            if (noClicks > 3 && currentScale > 0.15) {
+                const container = document.querySelector('.buttons-container');
+                const containerRect = container.getBoundingClientRect();
+                const buttonRect = this.getBoundingClientRect();
+                
+                // Calculate max positions to keep button within container
+                const maxX = containerRect.width - buttonRect.width * currentScale;
+                const maxY = containerRect.height - buttonRect.height * currentScale;
+                
+                // Random position within container
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+                
+                this.style.position = 'absolute';
+                this.style.left = `${x}px`;
+                this.style.top = `${y}px`;
+            }
+            
+            // If button becomes too small, automatically trigger yes
+            if (currentScale <= 0.15 && noClicks > 5) {
+                setTimeout(() => {
+                    yesBtn.click();
+                }, 500);
+            }
+        });
+        
+        yesBtn.addEventListener('click', function() {
+            // Show celebration
+            mainGif.style.display = 'none';
+            bearGif.style.display = 'block';
+            message.style.display = 'block';
+            heartsContainer.style.display = 'flex';
+            
+            // Hide the no button completely
+            noBtn.style.display = 'none';
+            
+            // Change yes button text and make it bigger
+            this.innerHTML = 'Mwah <i class="fas fa-heart"></i> <i class="fas fa-heart"></i> <i class="fas fa-heart"></i>';
+            this.style.fontSize = '2.2rem';
+            this.style.padding = '20px 50px';
+            this.style.transform = 'scale(1.1)';
+            
+            // Create floating hearts celebration
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+            
+            // Add some celebratory animation to the yes button
+            setInterval(() => {
+                this.style.transform = this.style.transform === 'scale(1.1)' ? 'scale(1.15)' : 'scale(1.1)';
+            }, 500);
+        });
+        
+        // Make sure the page is responsive on resize
+        window.addEventListener('resize', function() {
+            // Reset no button position if window is resized
+            if (noClicks > 3 && noBtn.style.position === 'absolute') {
+                const container = document.querySelector('.buttons-container');
+                const containerRect = container.getBoundingClientRect();
+                const buttonRect = noBtn.getBoundingClientRect();
+                
+                const maxX = containerRect.width - buttonRect.width * currentScale;
+                const maxY = containerRect.height - buttonRect.height * currentScale;
+                
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+                
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+            }
+        });
+    </script>
+</body>
+</html>
+
