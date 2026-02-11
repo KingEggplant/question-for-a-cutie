@@ -561,46 +561,11 @@
 music.loop = true;
 music.volume = 0.4;
 
-// Create visible play button
-const playBtn = document.createElement('button');
-playBtn.innerHTML = '🎵 Play Music';
-playBtn.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #ff4d6d;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 4px 15px rgba(255,77,109,0.4);
-`;
-
-document.body.appendChild(playBtn);
-
-playBtn.addEventListener('click', () => {
-    music.play().then(() => {
-        playBtn.innerHTML = '🎵 Music Playing';
-        playBtn.style.background = '#4CAF50';
-    }).catch(e => {
-        alert('Please allow audio playback for the full experience!');
-    });
-});
-
-// Try to auto-play on desktop
-if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-    music.play().catch(() => {
-        console.log('Auto-play blocked, waiting for user interaction');
-    });
-}
         
     </script>
 </body>
 </html>
+
 
 
 
