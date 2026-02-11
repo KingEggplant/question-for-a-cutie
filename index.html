@@ -556,8 +556,19 @@
                 noBtn.style.top = `${y}px`;
             }
         });
+
+        const music = new Audio('images/soft spot.mpeg');
+music.loop = true;
+music.volume = 0.4;
+        if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    music.play().catch(() => {
+        console.log('Auto-play blocked, waiting for user interaction');
+    });
+}
+        
     </script>
 </body>
 </html>
+
 
 
